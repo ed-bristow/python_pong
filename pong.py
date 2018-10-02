@@ -53,19 +53,15 @@ while True:
             quit()
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[pygame.K_w]:
-                print("p1 up key pressed")
                 bat1.ypos -= 30
                 pygame.display.update()
             if pygame.key.get_pressed()[pygame.K_s]:
-                print("p1 down key pressed")
                 bat1.ypos += 30
                 pygame.display.update()
             if pygame.key.get_pressed()[pygame.K_o]:
-                print("p2 up key pressed")
                 bat2.ypos -= 30
                 pygame.display.update()
             if pygame.key.get_pressed()[pygame.K_l]:
-                print("p2 down key pressed")
                 bat2.ypos += 30
                 pygame.display.update()
 
@@ -101,7 +97,12 @@ while True:
         elif ball.gradient == -1:
             ball.gradient = -2
 
-    if ball.xpos >= bat2.xpos and ball.xpos <= (bat2.xpos+10):
+    if ball.xpos <= bat1.xpos and ball.xpos >= (bat1.xpos-10) and ball.ypos >= bat1.ypos and ball.ypos <= (bat1.ypos + bat_length):
+        if ball.gradient == -2:
+            ball.gradient = 1
+        elif ball.gradient == -1:
+            ball.gradient = 2
+    if ball.xpos >= bat2.xpos and ball.xpos <= (bat2.xpos+10) and ball.ypos >= bat2.ypos and ball.ypos <= (bat2.ypos + bat_length):
         if ball.gradient == 2:
             ball.gradient = -1
         elif ball.gradient == 1:
