@@ -6,9 +6,9 @@ import pygame
 
 clock = pygame.time.Clock()
 pygame.init()
-FPS = 60
+FPS = 20
 clock.tick(FPS)
-dt = clock.tick(60)
+dt = clock.tick(80)
 delay = 1
 
 black = (0, 0, 0)
@@ -33,6 +33,7 @@ class ball:
         self.ypos = 240
         self.colour = (255,255,255)
         self.speed = 1
+        self.gradient = 1
 
 ball = ball()
 bat1 = bats(20,240)
@@ -44,7 +45,7 @@ def default_ball():
 
 while True:
 
-    delta = clock.tick() / 100.0
+    delta = clock.tick() / 50.0
     delay -= delta
 
     for event in pygame.event.get():
@@ -69,8 +70,18 @@ while True:
                 pygame.display.update()
 
     if delay <= 0:
-        ball.xpos += ball.speed * dt
-        ball.ypos += ball.speed * dt
+        if ball.gradient == 2:
+            ball.xpos += (ball.speed * dt)
+            ball.ypos += (ball.speed * dt)
+        if ball.gradient == 1:
+            ball.xpos += (ball.speed * dt)
+            ball.ypos -= (ball.speed * dt)
+        if ball.gradient == -1:
+            ball.xpos -= (ball.speed * dt)
+            ball.ypos += (ball.speed * dt)
+        if ball.gradient == -2:
+            ball.xpos -= (ball.speed * dt)
+            ball.ypos -= (ball.speed * dt)
         delay = 1
 
     if ball.xpos <= 0:
@@ -79,6 +90,23 @@ while True:
     elif ball.xpos >= 640:
         print("game over")
         default_ball()
+    if ball.ypos <= 0:
+        if ball.gradient == 1:
+            ball.gradient = 2
+        elif ball.gradient == -2:
+            ball.gradient = -1
+    elif ball.ypos >= 480:
+        if ball.gradient == 2:
+            ball.gradient = 1
+        elif ball.gradient == -1:
+            ball.gradient = -2
+
+    if ball.xpos >= bat2.xpos and ball.xpos <= (bat2.xpos+10):
+        if ball.gradient == 2:
+            ball.gradient = -1
+        elif ball.gradient == 1:
+            ball.gradient = -2
+
 
     screen.fill(black)
     pygame.draw.circle(screen, ball.colour, (ball.xpos, ball.ypos), 5, 5)
